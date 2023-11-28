@@ -1,0 +1,250 @@
+﻿@model Nike.Models.EF.Account
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<!--begin::Head-->
+<head>
+    <base href="../../../">
+    <meta charset="utf-8" />
+    <title>LoginAdmin</title>
+    <meta name="description" content="Login page example" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="canonical" href="https://keenthemes.com/metronic" />
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <!--end::Fonts-->
+    <!--begin::Page Custom Styles(used by this page)-->
+    <link href="~/Asset/assets/css/pages/login/login-1.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Custom Styles-->
+    <!--begin::Global Theme Styles(used by all pages)-->
+    <link href="~/Asset/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/Asset/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/Asset/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Global Theme Styles-->
+    <!--begin::Layout Themes(used by all pages)-->
+    <link href="~/Asset/assets/css/themes/layout/header/base/light.css" rel="stylesheet" type="text/css" />
+    <link href="~/Asset/assets/css/themes/layout/header/menu/light.css" rel="stylesheet" type="text/css" />
+    <link href="~/Asset/assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" />
+    <link href="~/Asset/assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" />
+    <!--end::Layout Themes-->
+    <link rel="shortcut icon" href="~/Asset/assets/media/logos/favicon.ico" />
+</head>
+<!--end::Head-->
+<!--begin::Body-->
+<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+    <!--begin::Main-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Login-->
+        <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
+            <!--begin::Aside-->
+            <div class="login-aside d-flex flex-column flex-row-auto" style="background-color: #F2C98A;">
+
+                <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-bottom bgi-position-x-center" style="background-image: url(/Asset/assets/media/svg/illustrations/login-visual-1.svg)"></div>
+                <!--end::Aside Bottom-->
+            </div>
+            <!--begin::Aside-->
+            <!--begin::Content-->
+            <div class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
+                <!--begin::Content body-->
+                <div class="d-flex flex-column-fluid flex-center">
+                    <!--begin::Signin-->
+                    <div class="login-form login-signin">
+                        <!--begin::Form-->
+                        <form class="form" novalidate="novalidate" id="kt_login_signin_form">
+                            @using (Html.BeginForm("LoginAdmin", "Base", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="form-horizontal">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="pb-13 pt-lg-0 pt-5">
+                                        <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Đăng nhập quản trị</h3>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.EditorFor(model => model.AccountName, new { htmlAttributes = new { @class = "form-control", placeholder = "Tên đăng nhập" } })
+                                        @Html.ValidationMessageFor(model => model.AccountName, "", new { @class = "badge badge-danger" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Mật khẩu" })
+                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "badge badge-danger" })
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="kt_login_signin_submit" type="submit" style="color: black" value="Đăng nhập" class="btn btn-default" />
+                                    </div>
+                                </div>
+                            }
+                        </form>
+                        <!--end::Form-->
+                    </div>
+                </div>
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Login-->
+    </div>
+    <!--end::Main-->
+    <script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>
+    <!--begin::Global Config(global config for global JS scripts)-->
+    <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3699FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#E1F0FF", "secondary": "#EBEDF3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };</script>
+    <!--end::Global Config-->
+    <!--begin::Global Theme Bundle(used by all pages)-->
+    <script src="~/Asset/assets/plugins/global/plugins.bundle.js"></script>
+    <script src="~/Asset/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
+    <script src="~/Asset/assets/js/scripts.bundle.js"></script>
+    <!--end::Global Theme Bundle-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/Asset/assets/js/pages/custom/login/login-general.js"></script>
+    <!--end::Page Scripts-->
+    <script>
+        "use strict";
+
+        // Class Definition
+        var KTLogin = function () {
+            var _login;
+
+            var _showForm = function (form) {
+                var cls = 'login-' + form + '-on';
+                var form = 'kt_login_' + form + '_form';
+
+                _login.removeClass('login-forgot-on');
+                _login.removeClass('login-signin-on');
+                _login.removeClass('login-signup-on');
+
+                _login.addClass(cls);
+
+                KTUtil.animateClass(KTUtil.getById(form), 'animate__animated animate__backInUp');
+            }
+
+            var _handleSignInForm = function () {
+                var validation;
+
+                // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+                validation = FormValidation.formValidation(
+                    KTUtil.getById('kt_login_signin_form'),
+                    {
+                        fields: {
+                            username: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Username is required'
+                                    }
+                                }
+                            },
+                            password: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Password is required'
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            trigger: new FormValidation.plugins.Trigger(),
+                            submitButton: new FormValidation.plugins.SubmitButton(),
+                            //defaultSubmit: new FormValidation.plugins.DefaultSubmit(), // Uncomment this line to enable normal button submit after form validation
+                            bootstrap: new FormValidation.plugins.Bootstrap()
+                        }
+                    }
+                );
+
+                $('#kt_login_signin_submit').on('click', function (e) {
+                    e.preventDefault();
+
+                    validation.validate().then(function (status) {
+                        if (status == 'Valid') {
+                            var formdata = $('#kt_login_signin_form').serialize()
+
+                            Login(formdata)
+                        } else {
+                            swal.fire({
+                                text: "Sorry, looks like there are some errors detected, please try again.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                heightAuto: false,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function () {
+                                KTUtil.scrollTop();
+                            });
+                        }
+                    });
+                });
+                function Login(data) {
+                    // Gửi Ajax request đến action "CheckLogin"
+                    $.ajax({
+                        url: '/Base/LoginAdmin',
+                        type: 'POST',
+                        data: data,
+                        success: function (result) {
+                            // Xử lý kết quả từ action
+                            if (result.status == "success") {
+                                window.location.href = '/Admin/Admin/Index';
+
+                            } else {
+                                // Hiển thị thông báo lỗi đăng nhập
+                                swal.fire({
+                                    title: "Có lỗi!",
+                                    text: result.message,
+                                    icon: "error",
+                                    buttonsStyling: false,
+
+                                    heightAuto: false,
+                                    customClass: {
+                                        confirmButton: "btn font-weight-bold btn-light-primary"
+                                    }
+
+                                }).then(function () {
+
+                                    KTUtil.scrollTop();
+                                });
+                            }
+                        },
+                        error: function () {
+                            // Xử lý lỗi khi gửi Ajax request
+                            swal.fire({
+                                text: "Xảy ra lỗi khi đăng nhập",
+                                icon: "error",
+                                buttonsStyling: false,
+                                heightAuto: false,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function () {
+                                KTUtil.scrollTop();
+                            });
+                        }
+                    });
+                }
+
+            }
+
+            // Public Functions
+            return {
+                // public functions
+                init: function () {
+                    _login = $('#kt_login');
+
+                    _handleSignInForm();
+                    _handleSignUpForm();
+                    _handleForgotForm();
+                }
+            };
+        }();
+
+        // Class Initialization
+        jQuery(document).ready(function () {
+            KTLogin.init();
+        });
+
+    </script>
+</body>
+<!--end::Body-->
+</html>
+
+

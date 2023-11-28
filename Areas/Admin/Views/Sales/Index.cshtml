@@ -1,0 +1,153 @@
+﻿@model IEnumerable<Nike.Models.EF.OrderDetail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@*@using (Html.BeginForm("Index", "Sales", FormMethod.Post))
+    {
+        <div class="form-group">
+            <label for="fromDate">Ngày bắt đầu</label>
+            <input type="date" class="form-control" id="fromDate" name="fromDate" value="@ViewBag.FromDate" />
+        </div>
+        <div class="form-group">
+            <label for="toDate">Ngày kết thúc</label>
+            <input type="date" class="form-control" id="toDate" name="toDate" value="@ViewBag.ToDate" />
+        </div>
+        <button type="submit" class="btn btn-primary">Thống kê</button>
+    }
+
+    @if (ViewBag.Message != null)
+    {
+        <p>@ViewBag.Message</p>
+    }
+    else if (ViewBag.ProductNames != null && ViewBag.ProductQuantities != null && ViewBag.ProductRevenues != null && ViewBag.Colors != null)
+    {
+        <div id="container">
+            <canvas id="quantityChart"></canvas>
+            <canvas id="revenueChart"></canvas>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"></script>
+        <script>
+            // Tạo biểu đồ tròn sử dụng Chart.js
+            var quantityChart = new Chart(document.getElementById("quantityChart"), {
+                type: 'pie',
+                data: {
+                    labels: @Html.Raw(Json.Encode(ViewBag.ProductNames)),
+                    datasets: [{
+                        data: @Html.Raw(Json.Encode(ViewBag.ProductQuantities)),
+                        backgroundColor: @Html.Raw(Json.Encode(ViewBag.Colors))
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Số lượng sản phẩm bán được từ @ViewBag.FromDate đến @ViewBag.ToDate'
+                        }
+                    }
+                }
+            });
+
+            var revenueChart = new Chart(document.getElementById("revenueChart"), {
+                type: 'pie',
+                data: {
+                    labels: @Html.Raw(Json.Encode(ViewBag.ProductNames)),
+                    datasets: [{
+                        data: @Html.Raw(Json.Encode(ViewBag.ProductRevenues)),
+                        backgroundColor: @Html.Raw(Json.Encode(ViewBag.Colors))
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Doanh thu sản phẩm bán được từ @ViewBag.FromDate đến @ViewBag.ToDate'
+                        }
+                    }
+                }
+            });
+        </script>
+    }*@
+
+@using (Html.BeginForm("Index", "Sales", FormMethod.Post))
+{
+    <div class="form-group">
+        <label for="fromDate">Ngày bắt đầu</label>
+        <input type="date" class="form-control" id="fromDate" name="fromDate" value="@ViewBag.FromDate" />
+    </div>
+    <div class="form-group">
+        <label for="toDate">Ngày kết thúc</label>
+        <input type="date" class="form-control" id="toDate" name="toDate" value="@ViewBag.ToDate" />
+    </div>
+    <button type="submit" class="btn btn-primary">Thống kê</button>
+}
+
+@if (ViewBag.Message != null)
+{
+    <p>@ViewBag.Message</p>
+}
+else if (ViewBag.ProductNames != null && ViewBag.ProductQuantities != null)
+{
+    <div id="container"></div>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Số lượng sản phẩm bán được từ @ViewBag.FromDate đến @ViewBag.ToDate'
+                },
+                xAxis: {
+                    categories: @Html.Raw(Json.Encode(ViewBag.ProductNames)),
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Số lượng'
+                    }
+                },
+                series: [{
+                    name: 'Sản phẩm',
+                    data: @Html.Raw(Json.Encode(ViewBag.ProductQuantities)),
+                }]
+            });
+
+            @*var revenueChart = new Chart(document.getElementById("revenueChart"), {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Encode(ViewBag.ProductNames)),
+                datasets: [{
+                    data: @Html.Raw(Json.Encode(ViewBag.ProductRevenues)),
+                    backgroundColor: @Html.Raw(Json.Encode(ViewBag.Colors))
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Doanh thu sản phẩm bán được từ @ViewBag.FromDate đến @ViewBag.ToDate'
+                    }
+                }
+            }
+        });*@
+    </script>    
+}
+

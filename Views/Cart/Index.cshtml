@@ -1,0 +1,182 @@
+﻿
+@model IEnumerable<Nike.Models.Cart>
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Giỏ hàng</h1>
+                <!--<nav class="d-flex align-items-center">-->
+                @*<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="category.html">Giỏ hàng </a>*@
+                <!--</nav>-->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="cart_area">
+    <div class="container">
+        <div class="cart_inner">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Sản phẩm</th>
+                            <th scope="col">Đơn giá</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Tổng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            float tongtien = 0;
+                            foreach (var item in Model)
+                            {
+                                tongtien += item.Total;
+                                <tr>
+                                    <td>
+                                        <div class="media">
+                                            <div class="d-flex">
+                                                <img src="~/Asset/Client/image/@item.Product.Image" style="width: 150px; height: 150px" alt="">
+                                            </div>
+                                            <div class="media-body">
+                                                <p>@item.Product.ProductName</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5>@String.Format("{0:0,0}", item.Product.Price)</h5>
+                                    </td>
+                                    <td>
+                                        <div class="product_count">
+                                            <input type="text" name="qty" id="@item.Product.ProductId" maxlength="12" value="@item.Quantity" title="Quantity:"
+                                                   class="input-text qty">
+                                            <button onclick="var result = document.getElementById('@item.Product.ProductId'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                                                    class="increase items-count" data-idpro="@item.Product.ProductId" type="button">
+                                                <i class="lnr lnr-chevron-up"></i>
+                                            </button>
+                                            <button onclick="var result = document.getElementById('@item.Product.ProductId'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
+                                                    class="reduced items-count" data-idpro="@item.Product.ProductId" type="button">
+                                                <i class="lnr lnr-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5>@String.Format("{0:0,0}", item.Product.Price * @item.Quantity)</h5>
+                                    </td>
+                                    <td>
+
+                                        <a href="" class="btn btn-light removecart" data-idproduct="@item.Product.ProductId"> Xóa</a>
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <h5>Tổng tiền</h5>
+                                </td>
+                                <td>
+                                    <h5>@String.Format("{0:0,0}", tongtien)</h5>
+                                </td>
+                            </tr>
+                            <tr class="out_button_area">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="checkout_btn_inner d-flex align-items-center">
+                                        <a class="gray_btn" href="@Url.Action("Index", "Nike")">Tiếp tục mua hàng</a>
+                                        <a class="primary-btn" href="@Url.Action("Index", "Checkout")">Mua hàng</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <p>Không có sản phẩm trong giỏ hàng!</p>
+                            <tr class="out_button_area">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="checkout_btn_inner d-flex align-items-center">
+                                        <a class="gray_btn" href="@Url.Action("Index", "Nike")">Tiếp tục mua hàng</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    $(function () {
+        $(".removecart").click(function () {
+            var model = {};
+            //lấy id sản phẩm
+            model.Id = $(this).data('idproduct');
+            $.ajax({
+                type: "POST",
+                url: '/Cart/Remove',
+                data:  JSON.stringify(model) ,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    alert("Xóa thành công!")
+                    $('#CartCount').text(@Session["count"] - 1);
+                    location.reload();
+                    $("#product-" + model.Id).remove();
+                },
+                error: function () {s
+                    alert("Xóa thất bại!");
+                }
+            });
+            return false;
+        });
+    });
+
+    $(function () {
+        $(".increase, .reduced").click(function () {
+            var model = {};
+            //lấy id sản phẩm
+            model.id = $(this).data('idpro');
+            model.quantity = $(`#${model.id}`).val();
+
+            console.log(model)
+           
+            $.ajax({
+                type: "POST",
+                url: '/Cart/UpdateTotal',
+                data:  JSON.stringify(model) ,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                }
+            });
+           
+        });
+    });
+
+  
+
+</script>
+
+
+
+

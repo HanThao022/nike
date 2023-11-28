@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NikeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="AccountId" />
+    </Key>
+    <Property Name="AccountId" Type="Int32" Nullable="false" />
+    <Property Name="AccountName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="AccountType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Sex" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreateBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDay" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Bills" Relationship="Self.FK_Bill_Account" FromRole="Account" ToRole="Bill" />
+    <NavigationProperty Name="OrderForms" Relationship="NikeModel.FK_OrderForm_Account" FromRole="Account" ToRole="OrderForm" />
+  </EntityType>
+  <EntityType Name="Bill">
+    <Key>
+      <PropertyRef Name="BillId" />
+    </Key>
+    <Property Name="BillId" Type="Int32" Nullable="false" />
+    <Property Name="AccountId" Type="Int32" />
+    <Property Name="OrderDetailId" Type="Int32" />
+    <Property Name="TotalAmount" Type="Double" />
+    <Property Name="CreateBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDay" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Account" Relationship="Self.FK_Bill_Account" FromRole="Bill" ToRole="Account" />
+    <NavigationProperty Name="OrderDetail" Relationship="Self.FK_Bill_OrderDetail" FromRole="Bill" ToRole="OrderDetail" />
+  </EntityType>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="OrderDetailId" />
+    </Key>
+    <Property Name="OrderDetailId" Type="Int32" Nullable="false" />
+    <Property Name="OrderFormId" Type="Int32" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="ProductId" Type="Int32" />
+    <Property Name="Price" Type="Double" />
+    <NavigationProperty Name="Bills" Relationship="Self.FK_Bill_OrderDetail" FromRole="OrderDetail" ToRole="Bill" />
+    <NavigationProperty Name="Product" Relationship="NikeModel.FK_OrderDetail_Product" FromRole="OrderDetail" ToRole="Product" />
+    <NavigationProperty Name="OrderForm" Relationship="NikeModel.FK_OrderDetail_OrderForm1" FromRole="OrderDetail" ToRole="OrderForm" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Warehouse">
+    <Key>
+      <PropertyRef Name="WarehouseId" />
+    </Key>
+    <Property Name="WarehouseId" Type="Int32" Nullable="false" />
+    <Property Name="WarehouseName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Product" Relationship="NikeModel.FK_Warehouse_Product" FromRole="Warehouse" ToRole="Product" />
+  </EntityType>
+  <Association Name="FK_Bill_Account">
+    <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+    <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="AccountId" />
+      </Principal>
+      <Dependent Role="Bill">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bill_OrderDetail">
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="0..1" />
+    <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderDetail">
+        <PropertyRef Name="OrderDetailId" />
+      </Principal>
+      <Dependent Role="Bill">
+        <PropertyRef Name="OrderDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="NikeEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Accounts" EntityType="Self.Account" />
+    <EntitySet Name="Bills" EntityType="Self.Bill" />
+    <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Warehouses" EntityType="Self.Warehouse" />
+    <AssociationSet Name="FK_Bill_Account" Association="Self.FK_Bill_Account">
+      <End Role="Account" EntitySet="Accounts" />
+      <End Role="Bill" EntitySet="Bills" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bill_OrderDetail" Association="Self.FK_Bill_OrderDetail">
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+      <End Role="Bill" EntitySet="Bills" />
+    </AssociationSet>
+    <EntitySet Name="Products" EntityType="NikeModel.Product" />
+    <EntitySet Name="ProductTypes" EntityType="NikeModel.ProductType" />
+    <AssociationSet Name="FK_OrderDetail_Product" Association="NikeModel.FK_OrderDetail_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_ProductType" Association="NikeModel.FK_Product_ProductType">
+      <End Role="ProductType" EntitySet="ProductTypes" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Warehouse_Product" Association="NikeModel.FK_Warehouse_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="Warehouse" EntitySet="Warehouses" />
+    </AssociationSet>
+    <EntitySet Name="OrderForms" EntityType="NikeModel.OrderForm" />
+    <AssociationSet Name="FK_OrderForm_Account" Association="NikeModel.FK_OrderForm_Account">
+      <End Role="Account" EntitySet="Accounts" />
+      <End Role="OrderForm" EntitySet="OrderForms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetail_OrderForm1" Association="NikeModel.FK_OrderDetail_OrderForm1">
+      <End Role="OrderForm" EntitySet="OrderForms" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Describe" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Warranty" Type="Int32" />
+    <Property Name="Size" Type="Double" />
+    <Property Name="Color" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Double" />
+    <Property Name="ProductTypeId" Type="Int32" />
+    <Property Name="CreateBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDay" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="OrderDetails" Relationship="NikeModel.FK_OrderDetail_Product" FromRole="Product" ToRole="OrderDetail" />
+    <NavigationProperty Name="ProductType" Relationship="NikeModel.FK_Product_ProductType" FromRole="Product" ToRole="ProductType" />
+    <NavigationProperty Name="Warehouse" Relationship="NikeModel.FK_Warehouse_Product" FromRole="Product" ToRole="Warehouse" />
+  </EntityType>
+  <EntityType Name="ProductType">
+    <Key>
+      <PropertyRef Name="ProductTypeId" />
+    </Key>
+    <Property Name="ProductTypeId" Type="Int32" Nullable="false" />
+    <Property Name="ProductTypeName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Products" Relationship="NikeModel.FK_Product_ProductType" FromRole="ProductType" ToRole="Product" />
+  </EntityType>
+  <Association Name="FK_OrderDetail_Product">
+    <End Type="NikeModel.Product" Role="Product" Multiplicity="0..1" />
+    <End Type="NikeModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_ProductType">
+    <End Type="NikeModel.ProductType" Role="ProductType" Multiplicity="0..1" />
+    <End Type="NikeModel.Product" Role="Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductType">
+        <PropertyRef Name="ProductTypeId" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="ProductTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Warehouse_Product">
+    <End Type="NikeModel.Product" Role="Product" Multiplicity="1" />
+    <End Type="NikeModel.Warehouse" Role="Warehouse" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Warehouse">
+        <PropertyRef Name="WarehouseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="OrderForm">
+    <Key>
+      <PropertyRef Name="OrderFormId" />
+    </Key>
+    <Property Name="OrderFormId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AccountId" Type="Int32" />
+    <Property Name="AccountName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="OrderDate" Type="DateTime" Precision="3" />
+    <Property Name="ShipDate" Type="DateTime" Precision="3" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TotalAmount" Type="Double" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Account" Relationship="NikeModel.FK_OrderForm_Account" FromRole="OrderForm" ToRole="Account" />
+    <NavigationProperty Name="OrderDetails" Relationship="NikeModel.FK_OrderDetail_OrderForm1" FromRole="OrderForm" ToRole="OrderDetail" />
+  </EntityType>
+  <Association Name="FK_OrderForm_Account">
+    <End Type="NikeModel.Account" Role="Account" Multiplicity="0..1" />
+    <End Type="NikeModel.OrderForm" Role="OrderForm" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="AccountId" />
+      </Principal>
+      <Dependent Role="OrderForm">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetail_OrderForm1">
+    <End Type="NikeModel.OrderForm" Role="OrderForm" Multiplicity="0..1" />
+    <End Type="NikeModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderForm">
+        <PropertyRef Name="OrderFormId" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="OrderFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

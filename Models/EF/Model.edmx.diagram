@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9cf103d92d3d4308bf8bae1b4048fdff" Name="Diagram1">
+        <EntityTypeShape EntityType="NikeModel.Account" Width="1.5" PointX="1.5" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.AccountType" Width="1.5" PointX="1.5" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.Bill" Width="1.5" PointX="7.5" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.Blog" Width="1.5" PointX="7.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.Brand" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.Coupon" Width="1.5" PointX="0.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.DetailBill" Width="1.5" PointX="9.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.OrderDetail" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.OrderForm" Width="1.5" PointX="3" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.Product" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.ProductType" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.Slide" Width="1.5" PointX="5.75" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.Staff" Width="1.5" PointX="3.75" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NikeModel.Warehouse" Width="1.5" PointX="5.25" PointY="7.5" IsExpanded="true" />
+        <AssociationConnector Association="NikeModel.FK_Account_AccountType" ManuallyRouted="false" />
+        <AssociationConnector Association="NikeModel.FK_Employee_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="NikeModel.FK_Bill_OrderDetail" ManuallyRouted="false" />
+        <AssociationConnector Association="NikeModel.FK_DetailBill_Bill" ManuallyRouted="false" />
+        <AssociationConnector Association="NikeModel.FK_Product_Brand" ManuallyRouted="false" />
+        <AssociationConnector Association="NikeModel.FK_OrderForm_Coupon" ManuallyRouted="false" />
+        <AssociationConnector Association="NikeModel.FK_OrderDetail_OrderForm" ManuallyRouted="false" />
+        <AssociationConnector Association="NikeModel.FK_OrderDetail_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="NikeModel.FK_Product_ProductType" ManuallyRouted="false" />
+        <AssociationConnector Association="NikeModel.FK_Warehouse_Product" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="NikeModel.Customer" Width="1.5" PointX="0.5" PointY="12.625" />
+        <AssociationConnector Association="NikeModel.FK_Custom_Account" />
+        <AssociationConnector Association="NikeModel.FK_OrderForm_Customer" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

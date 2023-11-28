@@ -1,0 +1,406 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NikeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="AccountId" />
+    </Key>
+    <Property Name="AccountId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AccountTypeId" Type="Int32" />
+    <Property Name="AccountName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="AccountType" Relationship="Self.FK_Account_AccountType" FromRole="Account" ToRole="AccountType" />
+    <NavigationProperty Name="Staffs" Relationship="Self.FK_Employee_Account" FromRole="Account" ToRole="Staff" />
+    <NavigationProperty Name="Customers" Relationship="NikeModel.FK_Custom_Account" FromRole="Account" ToRole="Customer" />
+  </EntityType>
+  <EntityType Name="AccountType">
+    <Key>
+      <PropertyRef Name="AccountTypeId" />
+    </Key>
+    <Property Name="AccountTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Accounts" Relationship="Self.FK_Account_AccountType" FromRole="AccountType" ToRole="Account" />
+  </EntityType>
+  <EntityType Name="Bill">
+    <Key>
+      <PropertyRef Name="BillId" />
+    </Key>
+    <Property Name="BillId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AccountId" Type="Int32" />
+    <Property Name="OrderDetailId" Type="Int32" />
+    <Property Name="TotalAmount" Type="Double" />
+    <Property Name="CreateBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDay" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="OrderDetail" Relationship="Self.FK_Bill_OrderDetail" FromRole="Bill" ToRole="OrderDetail" />
+    <NavigationProperty Name="DetailBills" Relationship="Self.FK_DetailBill_Bill" FromRole="Bill" ToRole="DetailBill" />
+  </EntityType>
+  <EntityType Name="Blog">
+    <Key>
+      <PropertyRef Name="BlogId" />
+    </Key>
+    <Property Name="BlogId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDay" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Brand">
+    <Key>
+      <PropertyRef Name="BrandId" />
+    </Key>
+    <Property Name="BrandId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Describe" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Products" Relationship="Self.FK_Product_Brand" FromRole="Brand" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Coupon">
+    <Key>
+      <PropertyRef Name="CouponId" />
+    </Key>
+    <Property Name="CouponId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Discount" Type="Int32" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="Start" Type="DateTime" Precision="3" />
+    <Property Name="End" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="OrderForms" Relationship="Self.FK_OrderForm_Coupon" FromRole="Coupon" ToRole="OrderForm" />
+  </EntityType>
+  <EntityType Name="DetailBill">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="BillId" Type="Int32" />
+    <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ProductId" Type="Int32" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="Price" Type="Double" />
+    <Property Name="CreateBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDay" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Bill" Relationship="Self.FK_DetailBill_Bill" FromRole="DetailBill" ToRole="Bill" />
+  </EntityType>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="OrderDetailId" />
+    </Key>
+    <Property Name="OrderDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderFormId" Type="Int32" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="ProductId" Type="Int32" />
+    <Property Name="Price" Type="Double" />
+    <NavigationProperty Name="Bills" Relationship="Self.FK_Bill_OrderDetail" FromRole="OrderDetail" ToRole="Bill" />
+    <NavigationProperty Name="OrderForm" Relationship="Self.FK_OrderDetail_OrderForm" FromRole="OrderDetail" ToRole="OrderForm" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_OrderDetail_Product" FromRole="OrderDetail" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="OrderForm">
+    <Key>
+      <PropertyRef Name="OrderFormId" />
+    </Key>
+    <Property Name="OrderFormId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerId" Type="Int32" />
+    <Property Name="FullName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="OrderDate" Type="DateTime" Precision="3" />
+    <Property Name="ShipDate" Type="DateTime" Precision="3" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TotalAmount" Type="Double" />
+    <Property Name="CouponId" Type="Int32" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Coupon" Relationship="Self.FK_OrderForm_Coupon" FromRole="OrderForm" ToRole="Coupon" />
+    <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetail_OrderForm" FromRole="OrderForm" ToRole="OrderDetail" />
+    <NavigationProperty Name="Customer" Relationship="NikeModel.FK_OrderForm_Customer" FromRole="OrderForm" ToRole="Customer" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Describe" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Warranty" Type="Int32" />
+    <Property Name="Size" Type="Double" />
+    <Property Name="Color" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Double" />
+    <Property Name="ProductTypeId" Type="Int32" />
+    <Property Name="BrandId" Type="Int32" />
+    <Property Name="CreateBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDay" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Brand" Relationship="Self.FK_Product_Brand" FromRole="Product" ToRole="Brand" />
+    <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetail_Product" FromRole="Product" ToRole="OrderDetail" />
+    <NavigationProperty Name="ProductType" Relationship="Self.FK_Product_ProductType" FromRole="Product" ToRole="ProductType" />
+    <NavigationProperty Name="Warehouse" Relationship="Self.FK_Warehouse_Product" FromRole="Product" ToRole="Warehouse" />
+  </EntityType>
+  <EntityType Name="ProductType">
+    <Key>
+      <PropertyRef Name="ProductTypeId" />
+    </Key>
+    <Property Name="ProductTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductTypeName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Products" Relationship="Self.FK_Product_ProductType" FromRole="ProductType" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Slide">
+    <Key>
+      <PropertyRef Name="SlideId" />
+    </Key>
+    <Property Name="SlideId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Image" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Staff">
+    <Key>
+      <PropertyRef Name="StaffId" />
+    </Key>
+    <Property Name="StaffId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Birthday" Type="DateTime" Precision="3" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDay" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" />
+    <Property Name="AccountId" Type="Int32" />
+    <NavigationProperty Name="Account" Relationship="Self.FK_Employee_Account" FromRole="Staff" ToRole="Account" />
+  </EntityType>
+  <EntityType Name="Warehouse">
+    <Key>
+      <PropertyRef Name="WarehouseId" />
+    </Key>
+    <Property Name="WarehouseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="WarehouseName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_Warehouse_Product" FromRole="Warehouse" ToRole="Product" />
+  </EntityType>
+  <Association Name="FK_Account_AccountType">
+    <End Role="AccountType" Type="Self.AccountType" Multiplicity="0..1" />
+    <End Role="Account" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AccountType">
+        <PropertyRef Name="AccountTypeId" />
+      </Principal>
+      <Dependent Role="Account">
+        <PropertyRef Name="AccountTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_Account">
+    <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+    <End Role="Staff" Type="Self.Staff" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="AccountId" />
+      </Principal>
+      <Dependent Role="Staff">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bill_OrderDetail">
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="0..1" />
+    <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderDetail">
+        <PropertyRef Name="OrderDetailId" />
+      </Principal>
+      <Dependent Role="Bill">
+        <PropertyRef Name="OrderDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetailBill_Bill">
+    <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
+    <End Role="DetailBill" Type="Self.DetailBill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bill">
+        <PropertyRef Name="BillId" />
+      </Principal>
+      <Dependent Role="DetailBill">
+        <PropertyRef Name="BillId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Brand">
+    <End Role="Brand" Type="Self.Brand" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brand">
+        <PropertyRef Name="BrandId" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="BrandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderForm_Coupon">
+    <End Role="Coupon" Type="Self.Coupon" Multiplicity="0..1" />
+    <End Role="OrderForm" Type="Self.OrderForm" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Coupon">
+        <PropertyRef Name="CouponId" />
+      </Principal>
+      <Dependent Role="OrderForm">
+        <PropertyRef Name="CouponId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetail_OrderForm">
+    <End Role="OrderForm" Type="Self.OrderForm" Multiplicity="0..1" />
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderForm">
+        <PropertyRef Name="OrderFormId" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="OrderFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetail_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_ProductType">
+    <End Role="ProductType" Type="Self.ProductType" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductType">
+        <PropertyRef Name="ProductTypeId" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="ProductTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Warehouse_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
+    <End Role="Warehouse" Type="Self.Warehouse" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Warehouse">
+        <PropertyRef Name="WarehouseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Accounts" EntityType="Self.Account" />
+    <EntitySet Name="AccountTypes" EntityType="Self.AccountType" />
+    <EntitySet Name="Bills" EntityType="Self.Bill" />
+    <EntitySet Name="Blogs" EntityType="Self.Blog" />
+    <EntitySet Name="Brands" EntityType="Self.Brand" />
+    <EntitySet Name="Coupons" EntityType="Self.Coupon" />
+    <EntitySet Name="DetailBills" EntityType="Self.DetailBill" />
+    <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
+    <EntitySet Name="OrderForms" EntityType="Self.OrderForm" />
+    <EntitySet Name="Products" EntityType="Self.Product" />
+    <EntitySet Name="ProductTypes" EntityType="Self.ProductType" />
+    <EntitySet Name="Slides" EntityType="Self.Slide" />
+    <EntitySet Name="Staffs" EntityType="Self.Staff" />
+    <EntitySet Name="Warehouses" EntityType="Self.Warehouse" />
+    <AssociationSet Name="FK_Account_AccountType" Association="Self.FK_Account_AccountType">
+      <End Role="AccountType" EntitySet="AccountTypes" />
+      <End Role="Account" EntitySet="Accounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_Account" Association="Self.FK_Employee_Account">
+      <End Role="Account" EntitySet="Accounts" />
+      <End Role="Staff" EntitySet="Staffs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bill_OrderDetail" Association="Self.FK_Bill_OrderDetail">
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+      <End Role="Bill" EntitySet="Bills" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetailBill_Bill" Association="Self.FK_DetailBill_Bill">
+      <End Role="Bill" EntitySet="Bills" />
+      <End Role="DetailBill" EntitySet="DetailBills" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Brand" Association="Self.FK_Product_Brand">
+      <End Role="Brand" EntitySet="Brands" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderForm_Coupon" Association="Self.FK_OrderForm_Coupon">
+      <End Role="Coupon" EntitySet="Coupons" />
+      <End Role="OrderForm" EntitySet="OrderForms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetail_OrderForm" Association="Self.FK_OrderDetail_OrderForm">
+      <End Role="OrderForm" EntitySet="OrderForms" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetail_Product" Association="Self.FK_OrderDetail_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_ProductType" Association="Self.FK_Product_ProductType">
+      <End Role="ProductType" EntitySet="ProductTypes" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Warehouse_Product" Association="Self.FK_Warehouse_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="Warehouse" EntitySet="Warehouses" />
+    </AssociationSet>
+    <EntitySet Name="Customers" EntityType="NikeModel.Customer" />
+    <AssociationSet Name="FK_Custom_Account" Association="NikeModel.FK_Custom_Account">
+      <End Role="Account" EntitySet="Accounts" />
+      <End Role="Customer" EntitySet="Customers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderForm_Customer" Association="NikeModel.FK_OrderForm_Customer">
+      <End Role="Customer" EntitySet="Customers" />
+      <End Role="OrderForm" EntitySet="OrderForms" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Birthday" Type="DateTime" Precision="3" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDay" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" />
+    <Property Name="AccountId" Type="Int32" />
+    <NavigationProperty Name="Account" Relationship="NikeModel.FK_Custom_Account" FromRole="Customer" ToRole="Account" />
+    <NavigationProperty Name="OrderForms" Relationship="NikeModel.FK_OrderForm_Customer" FromRole="Customer" ToRole="OrderForm" />
+  </EntityType>
+  <Association Name="FK_Custom_Account">
+    <End Type="NikeModel.Account" Role="Account" Multiplicity="0..1" />
+    <End Type="NikeModel.Customer" Role="Customer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="AccountId" />
+      </Principal>
+      <Dependent Role="Customer">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderForm_Customer">
+    <End Type="NikeModel.Customer" Role="Customer" Multiplicity="0..1" />
+    <End Type="NikeModel.OrderForm" Role="OrderForm" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="OrderForm">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

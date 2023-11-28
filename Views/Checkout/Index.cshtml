@@ -1,0 +1,157 @@
+﻿@model IEnumerable<Nike.Models.Cart>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Checkout</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="single-product.html">Checkout</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@{
+    Nike.Models.EF.Account account = (Nike.Models.EF.Account)Session["Account"];
+    Nike.Models.EF.Customer customer = (Nike.Models.EF.Customer)Session["Customer"];
+}
+<section class="checkout_area section_gap">
+    <div class="container">
+        <div class="billing_details">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h3>Danh sách sản phẩm</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col">Đơn giá</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Tổng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                float tongtien = 0;
+                                foreach (var item in Model)
+                                {
+
+                                    tongtien += item.Total;
+                                    <tr>
+                                        <td>
+                                            <div class="media">
+                                                <div class="d-flex">
+                                                    <img src="~/Asset/Client/image/@item.Product.Image" style="width: 70px; height: 70px" alt="">
+                                                </div>
+                                                <div class="media-body">
+                                                    <p>@item.Product.ProductName</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <h5 style="font-size: 14px">@String.Format("{0:0,0}", item.Product.Price)</h5>
+                                        </td>
+                                        <td>
+                                            <div class="product_count">
+                                                <input type="text" name="qty" id="@item.Product.ProductId" maxlength="12" value="@item.Quantity"
+                                                       class="input-text qty">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <h5 style="font-size: 14px">@String.Format("{0:0,0}", item.Product.Price * @item.Quantity)</h5>
+                                        </td>
+                                    </tr>
+
+                                }
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <h5 style="font-size: 14px">Tổng tiền</h5>
+                                    </td>
+                                    <td>
+                                        <h5 style="font-size: 14px" id="totalMoney">@String.Format("{0:0,0}", tongtien)</h5>
+                                    </td>
+                                </tr>
+
+                            }
+                            else
+                            {
+
+                            }
+                            <tr class="out_button_area">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="checkout_btn_inner d-flex align-items-center">
+                                        <a class="gray_btn" href="@Url.Action("Index", "Nike")">Hủy</a>
+                                        <a class="primary-btn" @*href="@Url.Action("Checkout", "Checkout")"*@
+                                           onclick="a()">Đặt hàng</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-4">
+                    <h3>Thông tin mua hàng</h3>
+                    <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                        @*<div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="add1" name="add1">
+                            <span class="placeholder" data-placeholder="Họ tên: ">@customer.FullName</span>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="number" name="number">
+                            <span class="placeholder" data-placeholder="Số điện thoại: ">@customer.Phone</span>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="email" name="compemailany">
+                            <span class="placeholder" data-placeholder="Email: ">@customer.Email</span>
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="add1" name="add1">
+                            <span class="placeholder" data-placeholder="Địa chỉ giao hàng: ">@customer.Address</span>
+                        </div>*@
+                        <div class="col-md-12 form-group">
+                            <div class="creat_account">
+                                <input type="checkbox" id="f-option3" name="selector">
+                                <label for="f-option3">Ghi chú cho người giao hàng?</label>
+                            </div>
+                            <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <script>
+        var tt = $('#totalMoney').text()
+        function a() {
+            $.ajax({
+                url: '/Checkout/Checkout/',
+                type: 'get',
+                data: { tt },
+                success: function (data) {
+                    /*alert("ok roi")*/
+                }
+            })
+        }
+    </script>
+
+
+
+

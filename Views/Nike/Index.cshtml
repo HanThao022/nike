@@ -1,0 +1,118 @@
+﻿@model Nike.Models.Product_ProductType
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Sản phẩm</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Trang chủ<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="#">Sản phẩm<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="category.html">Fashon Category</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+<div class="container" style="margin-top: 50px; margin-bottom: 50px">
+    <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-5">
+            <div class="sidebar-categories">
+                <div class="head">Loại sản phẩm</div>
+                <ul class="main-categories">
+                    <li class="main-nav-list">
+                        @foreach (var producType in ViewBag.ListProductTypes)
+                        {
+                            <a href="#" name="producType" data-id="@producType.ProductTypeId">
+                                <span class="lnr lnr-arrow-right "></span>@producType.ProductTypeName
+                            </a>
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-xl-9 col-lg-8 col-md-7">
+            <section class="lattest-product-area pb-40 category-list">
+                <div class="row" id="ListProduct">                   
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var pageNum = 1
+    var isFull
+    var isLoading = false
+    var currProductType
+    $(document).ready(function () {
+        GetProductByProductType()
+        $('[name="producType"]').click(function (event) {
+            event.preventDefault()
+            currProductType = $(this).data('id')
+            $('#ListProduct').empty()
+            pageNum = 1
+            GetProductByProductType(currProductType)
+        })
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + 1 >= $(document).height() - $(window).height() - 500 && !isFull && !isLoading) {
+                isLoading = true
+                GetProductByProductType(currProductType)
+              
+            }
+        });
+    });
+
+    function GetProductByProductType(id) {
+        console.log(pageNum)
+        $.ajax({
+            url: '/Nike/CDCategories',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                id,
+               page: pageNum
+            }
+        }).success(function (result) {
+            
+            $('.pagination').empty()
+            let data = result.data
+            isFull = result.isFull
+            $.each(data, function (i, item) {
+                
+                let productHtml = `<div class="col-lg-4 col-md-6">
+                            <div class="single-product">
+                                <a href="/Nike/Details/${item.ProductId}">
+                                    <img style="height: 278px" class="img-fluid" src="/Asset/Client/image/${item.Image.trim()}" alt="">
+                                </a>                                
+                                <div class="product-details">
+                                    <h6><a style="color: black; text-transform: none;" href="/Nike/Details/${item.ProductId}">${item.ProductName}</a>                                       
+                                </h6>
+                                <div class="price">
+                                    <h6><a style="color: gray" href="/Nike/Details/${item.ProductId}">${item.Price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</a></h6>
+                                </div>                                                               
+                            </div>
+                        </div>
+                    </div>`
+
+                $('#ListProduct').append(productHtml)
+
+            });          
+          
+            isLoading = false
+            pageNum++
+        }).error(function () {
+
+        })
+    }
+
+
+</script>

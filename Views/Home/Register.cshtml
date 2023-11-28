@@ -1,0 +1,208 @@
+﻿@model Nike.Models.EF.Account
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+<!--end::Fonts-->
+<!--begin::Page Custom Styles(used by this page)-->
+<link href="~/Asset/assets/css/pages/login/classic/login-4.css" rel="stylesheet" type="text/css" />
+<!--end::Page Custom Styles-->
+<!--begin::Global Theme Styles(used by all pages)-->
+<link href="~/Asset/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+<link href="~/Asset/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
+<link href="~/Asset/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+<!--end::Global Theme Styles-->
+<!--begin::Layout Themes(used by all pages)-->
+<link href="~/Asset/assets/css/themes/layout/header/base/light.css" rel="stylesheet" type="text/css" />
+<link href="~/Asset/assets/css/themes/layout/header/menu/light.css" rel="stylesheet" type="text/css" />
+<link href="~/Asset/assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" />
+<link href="~/Asset/assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" />
+<!--end::Layout Themes-->
+<link rel="shortcut icon" href="~/Asset/assets/media/logos/favicon.ico" />
+
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Sản phẩm</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Trang chủ<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="#">Sản phẩm<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="category.html">Fashion Category</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="d-flex flex-column flex-root" style="margin: 50px 0 50px 0">
+    <!--begin::Login-->
+    <div class="login login-4 login-signin-on d-flex flex-row-fluid" id="kt_login">
+        <div class="d-flex flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat">
+            <div class="login-form text-center p-7 position-relative overflow-hidden">
+                <!--begin::Login Header-->
+                <div class="d-flex flex-center mb-15">
+                    <a href="#">
+                        <img src="~/Asset/Client/img/nike (1).png" class="max-h-75px" alt="" />
+                    </a>
+                </div>
+                <!--Signin-->
+                <div class="login-signin">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.EditorFor(model => model.AccountName, new { htmlAttributes = new { @class = "form-control", placeholder = "Tài khoản" } })
+                            @Html.ValidationMessageFor(model => model.AccountName, "", new { @class = "badge badge-danger" })
+
+                        </div>
+
+                        @*<div class="form-group">
+                            @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", placeholder = "Họ tên" } })
+                            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "badge badge-danger" })
+
+                        </div>*@
+
+                        <div class="form-group">
+                            @Html.PasswordFor(model => model.Password,new { @class = "form-control", placeholder = "Mật khẩu" } )
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "badge badge-danger" })
+
+                        </div>
+
+                        @*<div class="form-group">
+                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Số điện thoại" } })
+                            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "badge badge-danger" })
+
+                        </div>*@
+
+                        @*<div class="form-group">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "badge badge-danger" })
+                            @if (ViewBag.error != null)
+                            {
+                                <span class="badge badge-danger">@ViewBag.error</span>
+                            }
+
+                        </div>*@
+
+                        <div class="form-group">
+                            <input type="submit" style="color: black" value="Đăng ký" class="btn btn-default" />
+                        </div>
+                        <div>
+                            @*@Html.ActionLink("Hủy", "Login")*@
+                            Bạn đã có tài khoản?
+                            <a href="/Home/Login">Đăng nhập</a>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>
+<!--begin::Global Config(global config for global JS scripts)-->
+<script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3699FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#E1F0FF", "secondary": "#EBEDF3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };</script>
+<!--end::Global Config-->
+<!--begin::Global Theme Bundle(used by all pages)-->
+<script src="~/Asset/assets/plugins/global/plugins.bundle.js"></script>
+<script src="~/Asset/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
+<script src="~/Asset/assets/js/scripts.bundle.js"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="~/Asset/assets/js/pages/custom/login/login-general.js"></script>
+
+
+
+@*@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Register</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.AccountName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.AccountName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.AccountName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Sex, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Sex, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@

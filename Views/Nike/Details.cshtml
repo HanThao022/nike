@@ -1,0 +1,188 @@
+﻿@model Nike.Models.EF.Product
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Product Details Page</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="single-product.html">product-details</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="product_image_area" style="margin-top: 50px">
+    <div class="container">
+        <div class="row s_product_inner">
+            <div class="col-lg-6">
+                <div class="s_Product_carousel">
+                    <div class="single-prd-item">
+                        <img class="img-fluid" src="~/Asset/Client/image/@Model.Image" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="s_product_text">
+                    <h3>@Model.ProductName</h3>
+                    <h2>@string.Format("{0:#,###,###}", Model.Price)</h2>
+                    <ul class="list">
+                        <li><a class="active" href="#"><span>Màu sắc</span> : @Model.Color</a></li>
+                        <li><a class="active" href="#"><span>Size</span> : @Model.Size</a></li>
+                    </ul><br />
+                    <ul class="main-categories" style="font-family: inherit">
+                        <li class="main-nav-list">
+                            <a data-toggle="collapse" href="#des" aria-expanded="false" aria-controls="des">
+                                <h5><u style="color:black">Mô tả</u></h5>
+                            </a>
+                            <ul class="collapse" id="des" data-toggle="collapse" aria-expanded="false" aria-controls="des">
+                                Thảo gà hehehehe
+                            </ul>
+                        </li>
+                    </ul><br />
+                    <ul class="main-categories">
+                        <li class="main-nav-list">
+                            <a data-toggle="collapse" href="#fruitsVegetable" aria-expanded="false" aria-controls="fruitsVegetable">
+                                <h5><u style="color:black">Giao hàng và đổi trả</u></h5>
+                            </a>
+                            <ul class="collapse" id="fruitsVegetable" data-toggle="collapse" aria-expanded="false" aria-controls="fruitsVegetable">
+                                <li>Đơn hàng từ 5.000.000₫ trở lên của bạn sẽ được giao hàng tiêu chuẩn miễn phí.</li>
+                                <ul>
+                                    <li>Giao hàng tiêu chuẩn 4-5 ngày làm việc</li>
+                                    <li>Chuyển phát nhanh 2-4 ngày làm việc</li>
+                                </ul>
+                                <li>Đơn hàng được xử lý và giao từ Thứ Hai đến Thứ Sáu (trừ ngày lễ)</li>
+                                <li>Thành viên Nike được hưởng lợi nhuận miễn phí</li>
+                            </ul>
+                        </li>
+                    </ul><br /><br />
+                    <div class="product_count">
+                        <label for="qty">Số lượng:</label>
+                        <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty">
+                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                                class="increase items-count" type="button">
+                            <i class="lnr lnr-chevron-up"></i>
+                        </button>
+                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
+                                class="reduced items-count" type="button">
+                            <i class="lnr lnr-chevron-down"></i>
+                        </button>
+                    </div>
+                    @{ var account = Session["Account"] as Nike.Models.EF.Account;}
+                    @if (account == null)
+                    {
+                        <div class="card_area d-flex align-items-center">
+                            <a class="primary-btn" href="@Url.Action("Login", "Home")">Thêm vào giỏ hàng</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card_area d-flex align-items-center" id="addtocart">
+                            <a class="primary-btn" href="#">Thêm vào giỏ hàng</a>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="product_description_area">
+</section>
+
+<section class="related-product-area section_gap_bottom">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="section-title">
+                    <h1>Sản phẩm cùng loại</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="row" name="more">
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="ctg-right">
+                    <a href="#" target="_blank">
+                        <img class="img-fluid d-block mx-auto" src="~/Asset/Client/img/category/c5.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    $(function () {
+        $("#addtocart").click(function () {
+            var model = {};
+            model.Id = @Model.ProductId;
+            model.Quantity = $("#sst").val();
+            $.ajax({
+                type: "POST",
+                url: "/Cart/AddToCart",
+                data:  JSON.stringify(model) ,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    alert("Thêm vào giỏ hàng thành công!")
+                    $('#CartCount').text(@Session["count"] + 1);
+                },
+                error: function () {
+                    alert("Thêm thất bại!");
+                }
+            });
+            return false;
+        });
+    });
+
+    listDff();
+
+    function listDff() {
+        var id = "@Model.ProductTypeId"
+        console.log(id)
+        $.ajax({
+            url: '/Nike/Different',
+            type: "GET",
+            data: {id:id},
+            success: function (data) {
+                console.log(data)
+                if (data.status == 200) {                    
+                    $.each(data.dff, function (k, v) {
+                        var more = `<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+                        <div class="single-related-product d-flex">
+                            <a href="/Nike/Details/${v.ProductId}"><img src="/Asset/Client/image/${v.Image}" style="width: 100px; height:100px" alt=""></a>
+                            <div class="desc">
+                                <a href="/Nike/Details/${v.ProductId}" class="title">${v.ProductName}</a>
+                                <div class="price">
+                                    <h6>${v.Price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                        $('div[name="more"]').append(more)
+                    })
+
+                } else {
+                    alert("Lỗi:" + data.message)
+                }
+
+            }
+        })
+    }
+</script>
+
